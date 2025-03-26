@@ -43,7 +43,11 @@
             { id: 7, Image: 'asset/8.png', title: 'lounge chair 08', price: 170 }
         ];
 
+        console.log("Initial Product List:", product);
+
         const categories = [...new Set(product.map((item) => item))];
+        console.log("Unique Categories:", categories);
+
         let cart = []; // Initialize cart array
         let i = 0;
 
@@ -51,22 +55,24 @@
         document.getElementById('root').innerHTML = categories.map((item) => {
             const { Image, title, price } = item;
             return `
-                <div class="box">
-                    <div class="img-box">
-                        <img class="image" src="${Image}" alt="${title}">
-                    </div>
-                    <div class="bottom">
-                        <p>${title}</p>
-                        <h2>$${price}.00</h2>
-                        <button onclick="addtocart(${i++})">Add to cart</button>
-                    </div>
-                </div>
-            `;
+        <div class="box">
+            <div class="img-box">
+                <img class="image" src="${Image}" alt="${title}">
+            </div>
+            <div class="bottom">
+                <p>${title}</p>
+                <h2>$${price}.00</h2>
+                <button onclick="addtocart(${i++})">Add to cart</button>
+            </div>
+        </div>
+    `;
         }).join('');
 
         // Add to cart function
         function addtocart(index) {
+            console.log("Adding to Cart - Index:", index, "Product:", categories[index]);
             cart.push({ ...categories[index] });
+            console.log("Cart after addition:", cart);
             displaycart();
         }
 
@@ -77,32 +83,38 @@
 
             if (cart.length === 0) {
                 document.getElementById('cartItem').innerHTML = "Your Cart is empty";
+                console.log("Cart is empty");
             } else {
                 document.getElementById('cartItem').innerHTML = cart.map((item) => {
                     const { Image, title, price } = item;
                     total += price;
+                    console.log(`Item: ${title}, Price: $${price}`);
                     return `
-                        <div class='cart-item'>
-                            <div class='row-img'>
-                                <img class='rowimg' src="${Image}" alt="${title}">
-                            </div>
-                            <p style='font-size:12px;'>${title}</p>
-                            <h2 style='font-size:15px;'>$${price}.00</h2>
-                            <i class='fa-solid fa-trash' onclick='delElement(${j++})'></i>
-                        </div>
-                    `;
+                <div class='cart-item'>
+                    <div class='row-img'>
+                        <img class='rowimg' src="${Image}" alt="${title}">
+                    </div>
+                    <p style='font-size:12px;'>${title}</p>
+                    <h2 style='font-size:15px;'>$${price}.00</h2>
+                    <i class='fa-solid fa-trash' onclick='delElement(${j++})'></i>
+                </div>
+            `;
                 }).join('');
             }
 
+            console.log("Total Cart Value:", total);
             document.getElementById('total').innerText = `$ ${total.toFixed(2)}`;
             document.getElementById('count').innerText = cart.length;
         }
 
         // Delete element from cart
         function delElement(index) {
+            console.log("Deleting Item at Index:", index, "Item:", cart[index]);
             cart.splice(index, 1);
+            console.log("Cart after Deletion:", cart);
             displaycart();
         }
+
     </script>
 </body>
 
